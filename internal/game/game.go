@@ -12,7 +12,16 @@ type action struct {
 	col int
 }
 
-func init_board(board [BOARD_SIZE][BOARD_SIZE]rune) {
+func IsValidMove(board [BOARD_SIZE][BOARD_SIZE]rune, row int, col int) bool {
+	// Check if row and col are within bounds
+	if row < 0 || row >= BOARD_SIZE || col < 0 || col >= BOARD_SIZE {
+		return false
+	}
+	// Check if cell is empty
+	return board[row][col] == ' '
+}
+
+func init_board(board *[BOARD_SIZE][BOARD_SIZE]rune) {
 	for row := 0; row < BOARD_SIZE; row++ {
 		for col := 0; col < BOARD_SIZE; col++ {
 			board[row][col] = ' '
@@ -77,8 +86,8 @@ func player_move(marker rune, board [BOARD_SIZE][BOARD_SIZE]rune) {
 			fmt.Println("Coordinates not available, try again.")
 			continue
 		}
-		if board[move.row][move.col] != ' ' {
-			fmt.Println("Square already occupied, insert new coordinates.")
+		if !IsValidMove(board, move.row, move.col) {
+			fmt.Println("Square already occupied or invalid coordinates, insert new coordinates.")
 			continue
 		}
 
@@ -115,4 +124,13 @@ func board_full(board [BOARD_SIZE][BOARD_SIZE]rune) bool {
 		}
 	}
 	return true
+}
+
+func IsGameFinished(board [BOARD_SIZE][BOARD_SIZE]rune) bool {
+	// Verifica se c'è un vincitore
+	if winner(board) != ' ' {
+		return true
+	}
+	// Verifica se la board è piena (pareggio)
+	return board_full(board)
 }

@@ -1,7 +1,7 @@
 # Directories
-tttc
-
+tttc/
+.github/
 # Files
 info.md
-project_roadmap.md
+project_roadmap.html
 research.md
